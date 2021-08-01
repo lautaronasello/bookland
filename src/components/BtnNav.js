@@ -18,15 +18,22 @@ export default function BtnNav(icon) {
   }, [location]);
 
   return (
-    <HStack spacing={['1rem']}>
+    <>
       <Link to='/home'>
         <Box
+          me='0.5rem'
           h='4rem'
           cursor='pointer'
           borderBottom='4px'
           borderColor={styleHome ? styleHome : '#f0f1f4'}
         >
-          <Icon as={FaHome} w='4rem' h='2.5rem' pos='relative' top='1rem' />
+          <Icon
+            as={FaHome}
+            w='4rem'
+            h='2.5rem'
+            pos={[null, 'relative']}
+            top={[null, '1rem']}
+          />
         </Box>
       </Link>
       <Link to='/profile'>
@@ -36,9 +43,15 @@ export default function BtnNav(icon) {
           borderBottom='4px'
           borderColor={styleProfile ? styleProfile : '#f0f1f4'}
         >
-          <Icon as={FaCircle} w='4rem' h='2.5rem' pos='relative' top='1rem' />
+          <Icon
+            as={FaCircle}
+            w='4rem'
+            h='2.5rem'
+            pos={[null, 'relative']}
+            top={[null, '1rem']}
+          />
         </Box>
       </Link>
-    </HStack>
+    </>
   );
 }

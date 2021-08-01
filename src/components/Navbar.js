@@ -26,7 +26,7 @@ export default function Navbar() {
         fontFamily='Montserrat'
         w='100%'
         bg='withesmoke'
-        px='8rem'
+        px={[null, '8rem']}
         minH='4rem'
         maxH='6rem'
         borderBottom='1px'

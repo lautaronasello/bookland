@@ -80,7 +80,7 @@ export default function ModalPost(onClose) {
             <FormControl isRequired>
               <Textarea placeholder='descripcion' />
             </FormControl>
-            <Text>Imagen jpg, png, jpeg</Text>
+            <Text>Imagen jpg, png o jpeg</Text>
             <input type='file' />
           </VStack>
         </ModalBody>
