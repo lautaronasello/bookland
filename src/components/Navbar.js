@@ -1,77 +1,56 @@
-import {
-  Box,
-  Divider,
-  Flex,
-  Heading,
-  IconButton,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  Modal,
-  Spacer,
-  useDisclosure,
-} from '@chakra-ui/react';
+import { Flex, Heading, Modal, Spacer, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
-import { FaCircle, FaPlus, FaSortDown } from 'react-icons/fa';
 import BtnNav from './BtnNav';
+import MenuNav from './MenuNav';
 import ModalPost from './ModalPost';
-
-export default function Navbar() {
+import useWindowDimensions from './useWindowDimensions';
+import firebase from 'firebase/app';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+export default function Navbar({ userId }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { width } = useWindowDimensions();
+  const [actualUser, setActualUser] = useState();
+
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+      setActualUser(user);
+    } else {
+      console.log('no hay nadie');
+    }
+  });
 
   return (
     <>
       <Flex
+        zIndex='10001'
+        pos={['fixed', null]}
         fontFamily='Montserrat'
         w='100%'
-        bg='withesmoke'
-        px={[null, '8rem']}
+        bg='#fafafa'
+        top='0rem'
+        px={['1rem', '8rem']}
         minH='4rem'
         maxH='6rem'
         borderBottom='1px'
         borderColor='#f6f7f8'
         align='center'
       >
-        <Heading color='#f1e5cb' fontSize='2.5rem'>
-          Bookland
-        </Heading>
-        <Spacer />
-        <BtnNav />
-        <Spacer />
-        <Menu>
-          <MenuButton
-            as={IconButton}
-            aria-label='add-post'
-            mx='0.5rem'
-            rounded='full'
-            icon={<FaPlus />}
-            onClick={onOpen}
-          />
-        </Menu>
-        <Menu>
-          <MenuButton
-            as={IconButton}
-            aria-label='add-post'
-            mx='0.5rem'
-            rounded='full'
-            icon={<FaSortDown />}
-          />
-          <MenuList m='0' p='0'>
-            <MenuItem h='5rem'>
-              <FaCircle /> <Box mx='1rem'>Lautaronasello</Box>
-            </MenuItem>
-            <Divider />
-            <MenuItem
-              onClick={() => {
-                window.location.pathname = '/';
-              }}
-            >
-              Salir
-            </MenuItem>
-          </MenuList>
-        </Menu>
+        <Link to='/home'>
+          <Heading color='#f1e5cb' fontSize='2.3rem'>
+            Bookagram
+          </Heading>
+        </Link>
+        {width >= 1000 && (
+          <>
+            <Spacer />
+            <BtnNav actualUser={actualUser} />
+            <Spacer />
+            <MenuNav actualUser={actualUser} onOpen={onOpen} />
+          </>
+        )}
       </Flex>
+      <Flex w='100%' minH='4rem'></Flex>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalPost onClose={onClose} />
       </Modal>

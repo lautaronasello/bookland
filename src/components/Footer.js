@@ -3,8 +3,10 @@ import React from 'react';
 
 export default function Footer() {
   return (
-    <Flex align='center' h='5rem' justify='center' bg='gray.100' w='100%'>
-      <Box>hola footer</Box>
+    <Flex align='center' h='4rem' justify='center' bg='#fafafa' w='100%'>
+      <Box color='gray.300' fontWeight='medium'>
+        Español - Lautaro Nasello 2021
+      </Box>
     </Flex>
   );
 }

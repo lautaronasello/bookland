@@ -1,8 +1,22 @@
 import React from 'react';
 import { Box, VStack, Center, Button, Divider, Text } from '@chakra-ui/react';
 import { FaGoogle } from 'react-icons/fa';
+import firebase from 'firebase';
 
 export default function Login() {
+  var provider = new firebase.auth.GoogleAuthProvider();
+
+  var handleLogin = () => {
+    firebase
+      .auth()
+      .signInWithPopup(provider)
+      .then(() => {
+        window.location.pathname = '/home';
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
   return (
     <Box
       h='20rem'
@@ -22,14 +36,13 @@ export default function Login() {
         </Center>
         <Box>
           <Button
-            as={'a'}
-            href='/home'
             w='100%'
             h='3.5em'
             shadow='0 10px 10px 0 rgba(0,0,0,0.5)'
             colorScheme='telegram'
             rounded='md'
             color='whitesmoke'
+            onClick={handleLogin}
           >
             Entrar
           </Button>

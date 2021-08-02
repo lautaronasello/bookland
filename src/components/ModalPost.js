@@ -52,27 +52,27 @@ export default function ModalPost(onClose) {
             <Box textAlign='left'>
               <Text>Puntuacion:</Text>
               <StarIcon
-                color={iconColor[0] ? 'gold' : 'gray.200'}
+                color={iconColor[0] ? 'gold' : 'gray.300'}
                 cursor='pointer'
                 onClick={() => changeIconColor(0)}
               />
               <StarIcon
-                color={iconColor[1] ? 'gold' : 'gray.200'}
+                color={iconColor[1] ? 'gold' : 'gray.300'}
                 cursor='pointer'
                 onClick={() => changeIconColor(1)}
               />
               <StarIcon
-                color={iconColor[2] ? 'gold' : 'gray.200'}
+                color={iconColor[2] ? 'gold' : 'gray.300'}
                 cursor='pointer'
                 onClick={() => changeIconColor(2)}
               />
               <StarIcon
-                color={iconColor[3] ? 'gold' : 'gray.200'}
+                color={iconColor[3] ? 'gold' : 'gray.300'}
                 cursor='pointer'
                 onClick={() => changeIconColor(3)}
               />
               <StarIcon
-                color={iconColor[4] ? 'gold' : 'gray.200'}
+                color={iconColor[4] ? 'gold' : 'gray.300'}
                 cursor='pointer'
                 onClick={() => changeIconColor(4)}
               />

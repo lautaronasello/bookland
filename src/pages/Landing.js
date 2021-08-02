@@ -9,7 +9,7 @@ export default function Landing() {
         <SimpleGrid columns={[1, 2]} spacingX={[null, '1rem']}>
           <Box my='auto' ml='10rem' textAlign='center'>
             <Heading color='#dfc690' fontSize='5rem'>
-              Book Society
+              Bookagram
             </Heading>
             <Text fontSize='1.5rem' fontWeight='light' textAlign='center'>
               Bienvenido a la red social de los amantes de los libros.
