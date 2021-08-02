@@ -7,7 +7,7 @@ import useWindowDimensions from './useWindowDimensions';
 import firebase from 'firebase/app';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-export default function Navbar({ userId }) {
+export default function Navbar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { width } = useWindowDimensions();
   const [actualUser, setActualUser] = useState();

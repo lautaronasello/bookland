@@ -9,7 +9,7 @@ import {
   MenuItem,
   MenuList,
 } from '@chakra-ui/react';
-import { FaCircle, FaPlus, FaSortDown } from 'react-icons/fa';
+import { FaPlus, FaSortDown } from 'react-icons/fa';
 import firebase from 'firebase/app';
 
 export default function MenuNav({ onOpen, actualUser }) {
