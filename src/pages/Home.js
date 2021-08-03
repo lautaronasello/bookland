@@ -20,7 +20,7 @@ export default function Home() {
           </VStack>
           {width >= 900 && (
             <Box>
-              <Box zIndex='10000' h='fit-content' w='30%' bg='blue' pos='fixed'>
+              <Box h='fit-content' w='30%' bg='blue' pos='fixed'>
                 hola
               </Box>
             </Box>

@@ -52,7 +52,7 @@ export default function Navbar() {
       </Flex>
       <Flex w='100%' minH='4rem'></Flex>
       <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalPost onClose={onClose} />
+        <ModalPost actualUser={actualUser} onClose={onClose} />
       </Modal>
     </>
   );

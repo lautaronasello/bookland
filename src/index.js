@@ -18,7 +18,7 @@ firebase.initializeApp({
 
 const db = firebase.firestore();
 const fs = firebase;
-var storage = firebase.storage;
+var storage = firebase.storage();
 
 ReactDOM.render(
   <React.StrictMode>

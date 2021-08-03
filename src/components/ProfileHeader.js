@@ -3,7 +3,7 @@ import {
   Button,
   FormControl,
   HStack,
-  Icon,
+  Img,
   Input,
   InputLeftAddon,
   Modal,
@@ -19,7 +19,6 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 import { useState } from 'react';
-import { FaCircle } from 'react-icons/fa';
 
 export default function ProfileHeader({ actualUser }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -39,14 +38,15 @@ export default function ProfileHeader({ actualUser }) {
     setWebSite(e.target.value);
   };
 
-  console.log(userName, description);
   return (
     <>
       <HStack ms={[null, '10rem']} mt='3rem' spacing='10px'>
-        <Box w='25rem' textAlign='center'>
-          <Icon
+        <Box w='25rem'>
+          <Img
+            mx='auto'
             color='#f1e5cb'
-            as={FaCircle}
+            src={actualUser && actualUser.photoURL}
+            rounded='full'
             w={['8rem', '10rem']}
             h={['8rem', '10rem']}
           />
