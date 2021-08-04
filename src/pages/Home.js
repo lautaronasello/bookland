@@ -9,7 +9,7 @@ export default function Home() {
   return (
     <>
       <Navbar />
-      <Container mb='3rem' mt='5rem' maxW='container.xl'>
+      <Container mb='3rem' mt='5rem' maxW='container.lg'>
         <Flex>
           <VStack w={[null, null, null, '60%']} spacing='5rem'>
             <HomeCart />

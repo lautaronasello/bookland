@@ -23,21 +23,22 @@ export default function Navbar() {
   return (
     <>
       <Flex
-        zIndex='10001'
+        zIndex='1100'
         pos={['fixed', null]}
         fontFamily='Montserrat'
         w='100%'
-        bg='#fafafa'
+        bg='#fff'
         top='0rem'
         px={['1rem', '8rem']}
         minH='4rem'
         maxH='6rem'
+        borderTop='1px'
         borderBottom='1px'
-        borderColor='#f6f7f8'
+        borderColor='#dbdbdb'
         align='center'
       >
         <Link to='/home'>
-          <Heading color='#f1e5cb' fontSize='2.3rem'>
+          <Heading color='#dfc690' fontSize='2.3rem'>
             Bookagram
           </Heading>
         </Link>

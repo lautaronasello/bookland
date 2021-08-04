@@ -19,7 +19,7 @@ import React, { useState } from 'react';
 import { db, storage } from '..';
 import { useEffect } from 'react';
 
-export default function ModalPost({ actualUser }) {
+export default function ModalPost({ actualUser, onClose }) {
   const [iconColor, setIconColor] = useState([
     true,
     false,
@@ -33,6 +33,8 @@ export default function ModalPost({ actualUser }) {
   const [reseña, setReseña] = useState('');
   const [description, setDescription] = useState('');
   const [image, setImage] = useState();
+  const [qualy, setQualy] = useState(1);
+  const [loadingProgress, setLoadingProgress] = useState(false);
 
   var handleChangeTitle = (e) => {
     setTitle(e.target.value);
@@ -43,6 +45,13 @@ export default function ModalPost({ actualUser }) {
   var handleChangeDescription = (e) => {
     setDescription(e.target.value);
   };
+
+  useEffect(() => {
+    var valueStars = (e) => {
+      return e === true;
+    };
+    setQualy(iconColor.filter(valueStars).length);
+  }, [iconColor]);
 
   var changeIconColor = (index) => {
     let clickStates = [...iconColor];
@@ -58,51 +67,64 @@ export default function ModalPost({ actualUser }) {
     var storageRef = storage.ref(`fotos/${file.name}`);
     var task = storageRef.put(file);
 
-    // setImage(task.snapshot.metadata.fullPath);
     task.on('state_changed', (snapshot) => {
       let percent = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
       setUploadValue(percent);
     });
 
+    setLoadingProgress(true);
     storageRef.getMetadata().then((metadata) => {
-      setImage(metadata.fullPath);
+      console.log(metadata.name);
+      setImage(metadata.name);
     });
   };
+
+  useEffect(() => {
+    if (uploadValue === 100) setLoadingProgress(false);
+  }, [uploadValue]);
 
   var handleSubmit = (e) => {
     e.preventDefault();
 
     var title = e.target[1].value;
-    var reseña = e.target[3].value;
-    var description = e.target[2].value;
+    var reseña = e.target[2].value;
+    var description = e.target[3].value;
     var userName = actualUser.displayName;
     db.collection(`${userName}`)
+      .doc('/post')
+      .collection('/docs')
       .add({
         title: `${title}`,
         reseña: `${reseña}`,
         description: `${description}`,
         image: `${image}`,
+        qualy: `${qualy}`,
       })
       .then((docRef) => {
         setTitle('');
         setReseña('');
         setDescription('');
         setUploadValue(0);
+        window.location.reload();
       })
       .catch((error) => {
         console.error('Error adding document: ', error);
       });
-
-    console.log(e);
   };
 
   return (
     <>
       <ModalOverlay />
       <form onSubmit={(e) => handleSubmit(e)}>
+        <ModalCloseButton
+          _hover={{ bg: 'transparent' }}
+          color='#fff'
+          size='lg'
+          zIndex='10001'
+          cursor='pointer'
+        />
         <ModalContent mt='7rem'>
           <ModalHeader>Crear Publicacion</ModalHeader>
-          <ModalCloseButton />
           <ModalBody>
             <VStack alignItems='start' spacing='1rem'>
               <FormControl isRequired>
@@ -116,7 +138,7 @@ export default function ModalPost({ actualUser }) {
                 <Input
                   onChange={handleChangeReseña}
                   value={reseña}
-                  placeholder='título de la reseña'
+                  placeholder='titulo de reseña'
                 />
               </FormControl>
               <Box textAlign='left'>
@@ -162,12 +184,14 @@ export default function ModalPost({ actualUser }) {
                 value={uploadValue}
                 max='100'
               />
-              <input type='file' onChange={handleUpload} />
+              <FormControl isRequired>
+                <input type='file' onChange={handleUpload} />
+              </FormControl>
             </VStack>
           </ModalBody>
 
           <ModalFooter>
-            {uploadValue > 0 && uploadValue < 99 ? (
+            {loadingProgress ? (
               <Button isLoading type='submit' colorScheme='blue' mr={3}>
                 Publicar
               </Button>

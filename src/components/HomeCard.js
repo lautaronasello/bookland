@@ -5,7 +5,7 @@ import { FaCircle } from 'react-icons/fa';
 
 export default function HomeCard() {
   return (
-    <Box w='90%' h='fit-content' border='1px' borderColor='#f6f7f8'>
+    <Box bg='#fff' w='95%' h='fit-content' border='1px' borderColor='#f6f7f8'>
       <Flex align='center' px='1rem' my='0.5rem'>
         <Icon w='3rem' h='3rem' me='2rem' as={FaCircle} />
         <VStack spacing='0.1rem'>

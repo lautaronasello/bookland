@@ -1,4 +1,4 @@
-import { Center, Divider } from '@chakra-ui/react';
+import { Center } from '@chakra-ui/react';
 import React from 'react';
 import Navbar from '../components/Navbar';
 import ProfileGrid from '../components/ProfileGrid';
@@ -22,9 +22,9 @@ export default function Profile() {
       <Navbar />
       <ProfileHeader actualUser={actualUser} />
       <Center mt='5rem' my='3rem'>
-        <Divider w='70%' />
+        <hr style={{ color: '#dbdbdb', width: '70%' }} />
       </Center>
-      <ProfileGrid />
+      <ProfileGrid actualUser={actualUser && actualUser} />
     </>
   );
 }
