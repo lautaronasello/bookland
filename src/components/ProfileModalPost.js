@@ -1,3 +1,4 @@
+import { StarIcon } from '@chakra-ui/icons';
 import {
   Box,
   Center,
@@ -22,6 +23,60 @@ export default function ProfileModalPost({
   url,
   actualUser,
 }) {
+  var starReview = (numberStars) => {
+    console.log(numberStars);
+
+    if (numberStars === '1')
+      return (
+        <>
+          <StarIcon color='gold' />
+          <StarIcon color='gray.300' />
+          <StarIcon color='gray.300' />
+          <StarIcon color='gray.300' />
+          <StarIcon color='gray.300' />
+        </>
+      );
+    if (numberStars === '2')
+      return (
+        <>
+          <StarIcon color='gold' />
+          <StarIcon color='gold' />
+          <StarIcon color='gray.300' />
+          <StarIcon color='gray.300' />
+          <StarIcon color='gray.300' />
+        </>
+      );
+    if (numberStars === '3')
+      return (
+        <>
+          <StarIcon color='gold' />
+          <StarIcon color='gold' />
+          <StarIcon color='gold' />
+          <StarIcon color='gray.300' />
+          <StarIcon color='gray.300' />
+        </>
+      );
+    if (numberStars === '4')
+      return (
+        <>
+          <StarIcon color='gold' />
+          <StarIcon color='gold' />
+          <StarIcon color='gold' />
+          <StarIcon color='gold' />
+          <StarIcon color='gray.300' />
+        </>
+      );
+    return (
+      <>
+        <StarIcon color='gold' />
+        <StarIcon color='gold' />
+        <StarIcon color='gold' />
+        <StarIcon color='gold' />
+        <StarIcon color='gold' />
+      </>
+    );
+  };
+
   return (
     <>
       <>
@@ -35,9 +90,9 @@ export default function ProfileModalPost({
         />
         <ModalContent minW='55rem' minH='rem' mx='auto' p='0' rounded='none'>
           <ModalBody p='0' minH='30rem' shadow='sm'>
-            <Flex>
-              <Box w='55%'>
-                <Image src={url} w='100%' />
+            <Flex minH='30rem'>
+              <Box w='55%' bg='#f1e5cb'>
+                <Image src={url} w='100%' minH='100%' />
               </Box>
               <Box w='45%'>
                 <Box p='0.5rem'>
@@ -59,7 +114,7 @@ export default function ProfileModalPost({
                     <Text>
                       <strong>{title}</strong> - {review}
                     </Text>
-                    <Text>{qualy}</Text>
+                    <Text>{starReview(qualy)}</Text>
                     <Box maxH='10rem' overflow='auto'>
                       {description}
                     </Box>

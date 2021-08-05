@@ -32,6 +32,7 @@ export default function MenuNav({ onOpen, actualUser }) {
           aria-label='add-post'
           mx='0.5rem'
           rounded='full'
+          bg='#dfc690'
           icon={<FaPlus />}
           onClick={onOpen}
         />

@@ -27,8 +27,17 @@ export default function ProfilePost({
 
   return (
     <>
-      <GridItem w='15rem' h='15rem' cursor='pointer' onClick={onOpen}>
-        <Image w='100%' h='100%' shadow='sm' src={url} />
+      <GridItem
+        w='15rem'
+        h='15rem'
+        shadow='sm'
+        cursor='pointer'
+        _hover={{
+          shadow: 'md',
+        }}
+        onClick={onOpen}
+      >
+        <Image w='100%' h='100%' src={url} />
       </GridItem>
       <Modal size='xl' isCentered isOpen={isOpen} onClose={onClose}>
         <ProfileModalPost
