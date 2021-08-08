@@ -38,7 +38,7 @@ export default function Navbar() {
         align='center'
       >
         <Link to='/home'>
-          <Heading color='#dfc690' fontSize='2.3rem'>
+          <Heading color='#dfc690' fontSize={['1.5rem', '2.3rem']}>
             Bookagram
           </Heading>
         </Link>
@@ -46,6 +46,12 @@ export default function Navbar() {
           <>
             <Spacer />
             <BtnNav actualUser={actualUser} />
+            <Spacer />
+            <MenuNav actualUser={actualUser} onOpen={onOpen} />
+          </>
+        )}
+        {width < 1000 && (
+          <>
             <Spacer />
             <MenuNav actualUser={actualUser} onOpen={onOpen} />
           </>

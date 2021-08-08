@@ -32,9 +32,10 @@ export default function ModalPost({ actualUser, onClose }) {
   const [title, setTitle] = useState('');
   const [reseña, setReseña] = useState('');
   const [description, setDescription] = useState('');
-  const [image, setImage] = useState();
+  const [image, setImage] = useState('');
   const [qualy, setQualy] = useState(1);
   const [loadingProgress, setLoadingProgress] = useState(false);
+  const [file, setFile] = useState();
 
   var handleChangeTitle = (e) => {
     setTitle(e.target.value);
@@ -63,49 +64,97 @@ export default function ModalPost({ actualUser, onClose }) {
   };
 
   var handleUpload = (e) => {
-    var file = e.target.files[0];
-    var storageRef = storage.ref(`fotos/${file.name}`);
-    var task = storageRef.put(file);
+    var files = e.target.files[0];
+    setFile(files.name);
+    var storageRef = storage
+      .ref('post')
+      .child(`${actualUser.displayName}/${files.name}`);
 
-    task.on('state_changed', (snapshot) => {
-      let percent = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      setUploadValue(percent);
-    });
+    storageRef.put(files).on(
+      'state_changed',
+      (snapshot) => {
+        let percent = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setUploadValue(percent);
+      },
+      (err) => {
+        console.log('error progreso: ', err);
+      }
+    );
 
     setLoadingProgress(true);
-    storageRef.getMetadata().then((metadata) => {
-      console.log(metadata.name);
-      setImage(metadata.name);
-    });
   };
+
+  useEffect(() => {
+    if (uploadValue === 100) {
+      storage
+        .ref('post')
+        .child(`${actualUser.displayName}/${file}`)
+        .getDownloadURL()
+        .then((url) => {
+          setImage(url);
+          console.log('se pudo');
+        })
+        .catch((e) => {
+          console.log('algo paso, ', e);
+        });
+    }
+  }, [uploadValue, actualUser, file]);
 
   useEffect(() => {
     if (uploadValue === 100) setLoadingProgress(false);
   }, [uploadValue]);
 
+  var f = new Date();
   var handleSubmit = (e) => {
     e.preventDefault();
-
     var title = e.target[1].value;
     var reseña = e.target[2].value;
     var description = e.target[3].value;
-    var userName = actualUser.displayName;
-    db.collection(`${userName}`)
+    var userUid = actualUser.uid;
+    var date = f.getDate() + '/' + (f.getMonth() + 1) + '/' + f.getFullYear();
+
+    db.collection('/database')
       .doc('/post')
-      .collection('/docs')
+      .collection(`/${userUid}`)
+      .doc('/userPost')
+      .collection(`${actualUser && actualUser.displayName}`)
       .add({
         title: `${title}`,
         reseña: `${reseña}`,
         description: `${description}`,
         image: `${image}`,
         qualy: `${qualy}`,
+        date: `${date}`,
       })
       .then((docRef) => {
         setTitle('');
         setReseña('');
         setDescription('');
         setUploadValue(0);
-        window.location.reload();
+        onClose();
+      })
+      .catch((error) => {
+        console.error('Error adding document: ', error);
+      });
+    db.collection('/database')
+      .doc('/allPost')
+      .collection('/docs')
+      .add({
+        user: actualUser.displayName,
+        userPhoto: actualUser.photoURL,
+        title: `${title}`,
+        reseña: `${reseña}`,
+        description: `${description}`,
+        image: `${image}`,
+        qualy: `${qualy}`,
+        date: `${date}`,
+      })
+      .then((docRef) => {
+        setTitle('');
+        setReseña('');
+        setDescription('');
+        setUploadValue(0);
+        onClose();
       })
       .catch((error) => {
         console.error('Error adding document: ', error);

@@ -1,7 +1,5 @@
 import { GridItem, Image, Modal, useDisclosure } from '@chakra-ui/react';
-import React, { useState } from 'react';
-import { useEffect } from 'react';
-import { storage } from '..';
+import React from 'react';
 import ProfileModalPost from './ProfileModalPost';
 
 export default function ProfilePost({
@@ -12,24 +10,12 @@ export default function ProfilePost({
   image,
   actualUser,
 }) {
-  const [url, setUrl] = useState('');
   const { isOpen, onOpen, onClose } = useDisclosure();
-
-  useEffect(() => {
-    storage
-      .ref(`fotos/`)
-      .child(`${image}`)
-      .getDownloadURL()
-      .then((url) => {
-        setUrl(url);
-      });
-  }, [image]);
-
   return (
     <>
       <GridItem
-        w='15rem'
-        h='15rem'
+        w={['7rem', '10rem', '15rem']}
+        h={['7rem', '10rem', '15rem']}
         shadow='sm'
         cursor='pointer'
         _hover={{
@@ -37,14 +23,19 @@ export default function ProfilePost({
         }}
         onClick={onOpen}
       >
-        <Image w='100%' h='100%' src={url} />
+        <Image w='100%' h='100%' src={image} />
       </GridItem>
-      <Modal size='xl' isCentered isOpen={isOpen} onClose={onClose}>
+      <Modal
+        size={['sm', 'sm', 'xl']}
+        isCentered
+        isOpen={isOpen}
+        onClose={onClose}
+      >
         <ProfileModalPost
           actualUser={actualUser}
           title={title}
           description={description}
-          url={url}
+          url={image}
           review={review}
           qualy={qualy}
         />

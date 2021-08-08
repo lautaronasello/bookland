@@ -26,8 +26,8 @@ export default function Login() {
       align='center'
       boxShadow='lg'
       px='2rem'
-      border='0.5px'
-      borderColor='#707070'
+      border='1px'
+      borderColor='#dbdbdb'
       mx='auto'
     >
       <VStack spacing='5rem'>

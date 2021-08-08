@@ -1,13 +1,14 @@
 import {
   Box,
   Button,
-  HStack,
   Img,
   Modal,
+  Stack,
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
 import React from 'react';
+import { useEffect } from 'react';
 import { useState } from 'react';
 import { db } from '..';
 import ProfileModalEdit from './ProfileModalEdit';
@@ -18,19 +19,33 @@ export default function ProfileHeader({ actualUser }) {
   const [userName, setUserName] = useState('');
   const [description, setDescription] = useState('');
 
-  if (actualUser) {
-    db.collection(`${actualUser.displayName}`).onSnapshot((querySnapshot) =>
-      querySnapshot.forEach((doc) => {
-        setUserName(doc.data().name);
-        setWebSite(doc.data().website);
-        setDescription(doc.data().bio);
-      })
-    );
-  }
+  useEffect(() => {
+    let mounted = true;
+    if (actualUser) {
+      db.collection(`${actualUser.displayName}`).onSnapshot((querySnapshot) =>
+        querySnapshot.forEach((doc) => {
+          if (mounted) {
+            setUserName(doc.data().name);
+            setWebSite(doc.data().website);
+            setDescription(doc.data().bio);
+          }
+        })
+      );
+    }
+    return () => {
+      mounted = false;
+    };
+  }, [actualUser]);
+
   return (
     <>
-      <HStack ms={[null, '10rem']} mt='3rem' spacing='10px'>
-        <Box w='25rem'>
+      <Stack
+        direction={['column', 'column', 'row']}
+        ms={[null, null, '10rem']}
+        mt='3rem'
+        spacing='10px'
+      >
+        <Box w={['100%', '100%', '25rem']}>
           <Img
             mx='auto'
             color='#f1e5cb'
@@ -40,9 +55,9 @@ export default function ProfileHeader({ actualUser }) {
             h={['8rem', '10rem']}
           />
         </Box>
-        <VStack align='start' spacing='1rem'>
-          <HStack w='fit-content' spacing='1rem'>
-            <Box fontSize={['13px', '3rem']} fontWeight='medium'>
+        <VStack align={['center', 'center', 'start']} spacing='1rem'>
+          <Stack w='fit-content' spacing='1rem'>
+            <Box fontSize={['1rem', '3rem']} fontWeight='medium'>
               {actualUser && actualUser.displayName}
             </Box>
             <Button
@@ -59,8 +74,8 @@ export default function ProfileHeader({ actualUser }) {
             >
               Editar perfil
             </Button>
-          </HStack>
-          <Box w='20rem'>
+          </Stack>
+          <Box w={['100%', '20rem']} textAlign={['center', null, 'start']}>
             <Box
               wordBreak='break-word'
               fontSize='1rem'
@@ -79,13 +94,14 @@ export default function ProfileHeader({ actualUser }) {
               fontWeight='medium'
               as={'a'}
               href={webSite}
+              px={[2, 0, 0]}
             >
               {webSite}
             </Box>
           </Box>
         </VStack>
-      </HStack>
-      <Modal size='xl' isCentered isOpen={isOpen} onClose={onClose}>
+      </Stack>
+      <Modal size={['sm', 'xl']} isCentered isOpen={isOpen} onClose={onClose}>
         <ProfileModalEdit
           url={webSite}
           userName={userName}

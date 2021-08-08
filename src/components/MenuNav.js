@@ -11,6 +11,7 @@ import {
 } from '@chakra-ui/react';
 import { FaPlus, FaSortDown } from 'react-icons/fa';
 import firebase from 'firebase/app';
+import { Link } from 'react-router-dom';
 
 export default function MenuNav({ onOpen, actualUser }) {
   var handleLogout = () => {
@@ -26,11 +27,11 @@ export default function MenuNav({ onOpen, actualUser }) {
   };
   return (
     <>
-      <Menu>
+      <Menu size='sm'>
         <MenuButton
           as={IconButton}
           aria-label='add-post'
-          mx='0.5rem'
+          ms='0.5rem'
           rounded='full'
           bg='#dfc690'
           icon={<FaPlus />}
@@ -46,15 +47,17 @@ export default function MenuNav({ onOpen, actualUser }) {
           icon={<FaSortDown />}
         />
         <MenuList zIndex='10001' m='0' p='0'>
-          <MenuItem h='5rem'>
-            <Image
-              src={actualUser && actualUser.photoURL}
-              w='2.5rem'
-              h='2.5rem'
-              rounded='full'
-            />
-            <Box mx='1rem'>{actualUser && actualUser.displayName}</Box>
-          </MenuItem>
+          <Link to='/profile'>
+            <MenuItem h='5rem'>
+              <Image
+                src={actualUser && actualUser.photoURL}
+                w='2.5rem'
+                h='2.5rem'
+                rounded='full'
+              />
+              <Box mx='1rem'>{actualUser && actualUser.displayName}</Box>
+            </MenuItem>
+          </Link>
           <Divider />
           <MenuItem onClick={handleLogout}>Salir</MenuItem>
         </MenuList>

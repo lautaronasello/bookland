@@ -8,24 +8,30 @@ export default function ProfileGrid({ actualUser }) {
   const [post, setPost] = useState();
 
   useEffect(() => {
-    if (actualUser) {
-      const dbRef = db
-        .collection(`${actualUser.displayName}`)
-        .doc('/post')
-        .collection('/docs');
-      dbRef.onSnapshot((querySnapshot) => {
-        var post = [];
-        querySnapshot.forEach((doc) => {
-          post.push(doc.data());
-        });
-        setPost(post);
+    let mounted = true;
+    const dbRef = db
+      .collection('/database')
+      .doc('/post')
+      .collection(`${actualUser && actualUser.uid}`)
+      .doc('/userPost')
+      .collection(`${actualUser && actualUser.displayName}`);
+    dbRef.onSnapshot((querySnapshot) => {
+      var post = [];
+      querySnapshot.forEach((doc) => {
+        post.push(doc.data());
       });
-    }
+      if (mounted) {
+        setPost(post);
+      }
+    });
+    return function cleanup() {
+      mounted = false;
+    };
   }, [actualUser]);
 
   return (
     <Flex mb='3rem' alignContent='center' justify='center'>
-      <SimpleGrid minW='5rem' columns={[1, 3]} gap={10}>
+      <SimpleGrid minW='5rem' columns={[3]} gap={[2, 5, 10]}>
         {post &&
           post.map((data, i) => {
             return (
