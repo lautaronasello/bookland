@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  HStack,
   Img,
   Modal,
   Stack,
@@ -56,7 +57,7 @@ export default function ProfileHeader({ actualUser }) {
           />
         </Box>
         <VStack align={['center', 'center', 'start']} spacing='1rem'>
-          <Stack w='fit-content' spacing='1rem'>
+          <HStack w='fit-content' spacing='1rem'>
             <Box fontSize={['1rem', '3rem']} fontWeight='medium'>
               {actualUser && actualUser.displayName}
             </Box>
@@ -74,7 +75,7 @@ export default function ProfileHeader({ actualUser }) {
             >
               Editar perfil
             </Button>
-          </Stack>
+          </HStack>
           <Box w={['100%', '20rem']} textAlign={['center', null, 'start']}>
             <Box
               wordBreak='break-word'

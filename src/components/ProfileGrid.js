@@ -31,7 +31,7 @@ export default function ProfileGrid({ actualUser }) {
 
   return (
     <Flex mb='3rem' alignContent='center' justify='center'>
-      <SimpleGrid minW='5rem' columns={[3]} gap={[2, 5, 10]}>
+      <SimpleGrid minW='5rem' columns={[3]} gap={[3, 5, 10]}>
         {post &&
           post.map((data, i) => {
             return (

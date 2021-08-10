@@ -29,15 +29,17 @@ export default function ProfileModalPost({
     <>
       <ModalOverlay />
       {width >= 768 && (
-        <>
-          <ModalCloseButton
-            _hover={{ bg: 'transparent' }}
-            color='#fff'
-            size='lg'
-            zIndex='10001'
-            cursor='pointer'
-          />
-        </>
+        <ModalCloseButton
+          borderRadius='none'
+          _hover={{ bg: 'transparent', outline: 0 }}
+          _active={{ boxShadow: 'none' }}
+          _focus={{ boxShadow: 'none' }}
+          outline='none'
+          color='#fff'
+          size='lg'
+          zIndex='10001'
+          cursor='pointer'
+        />
       )}
       <ModalContent
         minW={['100%', '90%', '40rem']}
@@ -47,13 +49,10 @@ export default function ProfileModalPost({
         p='0'
         rounded='none'
       >
-        {width < 768 && <ModalCloseButton />}
-        <ModalBody
-          p='0'
-          minH={['10rem', '3rem', null]}
-          maxh={[null, null, '10rem']}
-          shadow='sm'
-        >
+        {width < 768 && (
+          <ModalCloseButton _focus={{ outline: 'none', boxShadow: 'none' }} />
+        )}
+        <ModalBody p='0' minH={['10rem', '5rem', null]} shadow='sm'>
           <Stack direction={['column', 'row', 'row']}>
             <Box w={['100%', '55%', '55%']} bg='#f1e5cb'>
               <Image src={url} w='100%' maxH={['31.5rem', '100%', '100%']} />

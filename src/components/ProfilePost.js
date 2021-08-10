@@ -14,8 +14,8 @@ export default function ProfilePost({
   return (
     <>
       <GridItem
-        w={['7rem', '10rem', '15rem']}
-        h={['7rem', '10rem', '15rem']}
+        w={['6rem', '10rem', '15rem']}
+        h={['6rem', '10rem', '15rem']}
         shadow='sm'
         cursor='pointer'
         _hover={{

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { fs } from '..';
 import HomeCardStack from '../components/HomeCardStack';
 import Navbar from '../components/Navbar';
+import ToReadList from '../components/ToReadList';
 import useWindowDimensions from '../components/useWindowDimensions.js';
 export default function Home() {
   const { width } = useWindowDimensions();
@@ -25,9 +26,7 @@ export default function Home() {
           <HomeCardStack actualUser={actualUser} />
           {width >= 900 && (
             <Box>
-              <Box h='fit-content' w='30%' bg='blue' pos='fixed'>
-                hola
-              </Box>
+              <ToReadList actualUser={actualUser} />
             </Box>
           )}
         </Flex>

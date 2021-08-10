@@ -1,8 +1,26 @@
 import { Box, Center, Flex, Heading, SimpleGrid, Text } from '@chakra-ui/react';
 import React from 'react';
+import { useEffect } from 'react';
+import { useState } from 'react';
+import { fs } from '..';
 import Login from '../components/Login';
 
 export default function Landing() {
+  const [actualUser, setActualUser] = useState();
+  fs.auth().onAuthStateChanged((user) => {
+    if (user) {
+      setActualUser(user);
+    }
+  });
+
+  useEffect(() => {
+    let isMounted = true;
+    if (actualUser && isMounted) window.location.pathname = '/home';
+    return () => {
+      isMounted = false;
+    };
+  }, [actualUser]);
+
   return (
     <Flex fontFamily='Montserrat' align='center' justify='center'>
       <Center minH='100vh'>

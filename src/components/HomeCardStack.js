@@ -27,7 +27,7 @@ export default function HomeCardStack() {
   }, [dbRef]);
 
   return (
-    <VStack w={[null, null, null, '60%']} spacing='5rem'>
+    <VStack w={[null, null, null, '60%']} spacing={['3rem', '5rem']}>
       {card &&
         card.map((data, i) => {
           return (

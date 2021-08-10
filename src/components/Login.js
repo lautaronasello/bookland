@@ -21,7 +21,7 @@ export default function Login() {
     <Box
       h='20rem'
       w='23rem'
-      rounded='2xl'
+      rounded='none'
       justify='center'
       align='center'
       boxShadow='lg'

@@ -77,7 +77,7 @@ export default function ProfileModalEdit({
         zIndex='10001'
         cursor='pointer'
       />
-      <ModalContent>
+      <ModalContent w={['100%', '80%', '50%']} rounded='none'>
         <ModalHeader>Editar perfil</ModalHeader>
         <form onSubmit={handleSubmit}>
           <ModalBody>
