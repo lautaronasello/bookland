@@ -9,6 +9,7 @@ export default function ProfilePost({
   description,
   image,
   actualUser,
+  author,
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
@@ -34,10 +35,12 @@ export default function ProfilePost({
         <ProfileModalPost
           actualUser={actualUser}
           title={title}
+          author={author}
           description={description}
           url={image}
           review={review}
           qualy={qualy}
+          onClose={onClose}
         />
       </Modal>
     </>

@@ -16,7 +16,6 @@ export default function Profile() {
       console.log('no hay nadie');
     }
   });
-
   return (
     <>
       <Navbar />

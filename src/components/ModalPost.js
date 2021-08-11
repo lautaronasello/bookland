@@ -13,6 +13,7 @@ import {
   VStack,
   Box,
   Progress,
+  useToast,
 } from '@chakra-ui/react';
 import { StarIcon } from '@chakra-ui/icons';
 import React, { useState } from 'react';
@@ -36,6 +37,8 @@ export default function ModalPost({ actualUser, onClose }) {
   const [qualy, setQualy] = useState(1);
   const [loadingProgress, setLoadingProgress] = useState(false);
   const [file, setFile] = useState();
+  const [author, setAuthor] = useState('');
+  const toast = useToast();
 
   var handleChangeTitle = (e) => {
     setTitle(e.target.value);
@@ -45,6 +48,10 @@ export default function ModalPost({ actualUser, onClose }) {
   };
   var handleChangeDescription = (e) => {
     setDescription(e.target.value);
+  };
+
+  var handleChangeAuthor = (e) => {
+    setAuthor(e.target.value);
   };
 
   useEffect(() => {
@@ -61,6 +68,16 @@ export default function ModalPost({ actualUser, onClose }) {
       else clickStates[i] = false;
     }
     setIconColor(clickStates);
+  };
+
+  var toastAppears = () => {
+    toast({
+      title: 'Publicado!',
+      description: 'La publicacion se ha subido satisfactoriamente.',
+      status: 'success',
+      duration: 9000,
+      isClosable: true,
+    });
   };
 
   var handleUpload = (e) => {
@@ -85,19 +102,22 @@ export default function ModalPost({ actualUser, onClose }) {
   };
 
   useEffect(() => {
+    let mounted = true;
     if (uploadValue === 100) {
       storage
         .ref('post')
         .child(`${actualUser.displayName}/${file}`)
         .getDownloadURL()
         .then((url) => {
-          setImage(url);
+          if (mounted) setImage(url);
           console.log('se pudo');
         })
         .catch((e) => {
           console.log('algo paso, ', e);
         });
     }
+
+    return () => (mounted = false);
   }, [uploadValue, actualUser, file]);
 
   useEffect(() => {
@@ -108,30 +128,32 @@ export default function ModalPost({ actualUser, onClose }) {
   var handleSubmit = (e) => {
     e.preventDefault();
     var title = e.target[1].value;
-    var reseña = e.target[2].value;
-    var description = e.target[3].value;
+    var author = e.target[2].value;
+    var reseña = e.target[3].value;
+    var description = e.target[4].value;
     var userUid = actualUser.uid;
     var date = f.getDate() + '/' + (f.getMonth() + 1) + '/' + f.getFullYear();
 
     db.collection('/database')
       .doc('/post')
-      .collection(`/${userUid}`)
-      .doc('/userPost')
-      .collection(`${actualUser && actualUser.displayName}`)
-      .add({
+      .collection(`/${userUid}_${actualUser && actualUser.displayName}`)
+      .doc(`${title}`)
+      .set({
         title: `${title}`,
+        author: `${author}`,
         reseña: `${reseña}`,
         description: `${description}`,
         image: `${image}`,
         qualy: `${qualy}`,
         date: `${date}`,
       })
-      .then((docRef) => {
+      .then(() => {
         setTitle('');
         setReseña('');
         setDescription('');
         setUploadValue(0);
         onClose();
+        toastAppears();
       })
       .catch((error) => {
         console.error('Error adding document: ', error);
@@ -139,10 +161,12 @@ export default function ModalPost({ actualUser, onClose }) {
     db.collection('/database')
       .doc('/allPost')
       .collection('/docs')
-      .add({
+      .doc(`${title}_${actualUser.displayName}`)
+      .set({
         user: actualUser.displayName,
         userPhoto: actualUser.photoURL,
         title: `${title}`,
+        author: `${author}`,
         reseña: `${reseña}`,
         description: `${description}`,
         image: `${image}`,
@@ -151,6 +175,7 @@ export default function ModalPost({ actualUser, onClose }) {
       })
       .then((docRef) => {
         setTitle('');
+        setAuthor('');
         setReseña('');
         setDescription('');
         setUploadValue(0);
@@ -185,9 +210,9 @@ export default function ModalPost({ actualUser, onClose }) {
               </FormControl>
               <FormControl isRequired>
                 <Input
-                  onChange={handleChangeReseña}
-                  value={reseña}
-                  placeholder='titulo de reseña'
+                  onChange={handleChangeAuthor}
+                  value={author}
+                  placeholder='autor'
                 />
               </FormControl>
               <Box textAlign='left'>
@@ -218,6 +243,13 @@ export default function ModalPost({ actualUser, onClose }) {
                   onClick={() => changeIconColor(4)}
                 />
               </Box>
+              <FormControl isRequired>
+                <Input
+                  onChange={handleChangeReseña}
+                  value={reseña}
+                  placeholder='titulo de reseña'
+                />
+              </FormControl>
               <FormControl isRequired>
                 <Textarea
                   onChange={handleChangeDescription}

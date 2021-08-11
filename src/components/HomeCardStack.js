@@ -37,6 +37,7 @@ export default function HomeCardStack({ actualUser }) {
               user={data.user}
               userPhoto={data.userPhoto}
               title={data.title}
+              author={data.author}
               reseña={data.reseña}
               qualy={data.qualy}
               image={data.image}

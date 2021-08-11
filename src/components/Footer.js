@@ -3,7 +3,14 @@ import React from 'react';
 
 export default function Footer() {
   return (
-    <Flex align='center' h='4rem' justify='center' bg='#fafafa' w='100%'>
+    <Flex
+      minH='60vh'
+      align='center'
+      h='4rem'
+      justify='center'
+      bg='#fafafa'
+      w='100%'
+    >
       <Box color='gray.300' fontWeight='medium'>
         Español - Lautaro Nasello 2021
       </Box>

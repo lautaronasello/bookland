@@ -7,6 +7,7 @@ import {
   Input,
   InputGroup,
   InputRightElement,
+  Spinner,
   Stack,
   Text,
   VStack,
@@ -20,6 +21,7 @@ export default function ToReadList({ actualUser }) {
   const [titleToAdd, setTitleToAdd] = useState('');
   const [list, setList] = useState([]);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const dbRef = db
     .collection(`${actualUser && actualUser.displayName}`)
@@ -37,6 +39,7 @@ export default function ToReadList({ actualUser }) {
   };
 
   var handleUpload = (e) => {
+    setIsLoading(true);
     e.preventDefault();
     db.collection(`${actualUser.displayName}`)
       .doc('list')
@@ -59,6 +62,7 @@ export default function ToReadList({ actualUser }) {
       });
       if (mounted) {
         setList(post);
+        setIsLoading(false);
       }
     });
 
@@ -67,7 +71,8 @@ export default function ToReadList({ actualUser }) {
     };
   }, [actualUser, dbRef]);
 
-  var handleSubmit = (e) => {
+  var handleDelete = (e) => {
+    setIsLoading(true);
     var docDelete = e.target.children[0].children[0].children[0].innerHTML;
     e.preventDefault();
     db.collection(`${actualUser.displayName}`)
@@ -76,6 +81,28 @@ export default function ToReadList({ actualUser }) {
       .doc(`${docDelete}`)
       .delete();
   };
+
+  if (isLoading)
+    return (
+      <Box
+        bg='#dfc690'
+        w='30%'
+        pos='fixed'
+        minH='30%'
+        h='fit-content'
+        maxH='80%'
+      >
+        <Flex
+          pos='relative'
+          top='8rem'
+          align='center'
+          justify='center'
+          minH='100%'
+        >
+          <Spinner aria-label='loading' size='md' color='white' />
+        </Flex>
+      </Box>
+    );
 
   return (
     <Box bg='#dfc690' w='30%' pos='fixed' h='fit-content' maxH='80%'>
@@ -90,32 +117,40 @@ export default function ToReadList({ actualUser }) {
         >
           Libros a leer
         </Box>
-        <Stack px='2rem' h='70%'>
-          <CheckboxGroup colorScheme='orange'>
-            {list &&
-              list.map((data, i) => {
-                return (
-                  <form onSubmit={handleSubmit} key={i}>
-                    <HStack>
-                      <Box>
-                        <Text display='inline'>{data.title}</Text>
-                        <Button
-                          size='sm'
-                          mx='0.5rem'
-                          bg='transparent'
-                          type='submit'
-                          _hover={{ bg: 'transparent' }}
-                          _focus={{ outline: 'none' }}
-                        >
-                          x
-                        </Button>
-                      </Box>
-                    </HStack>
-                  </form>
-                );
-              })}
-          </CheckboxGroup>
-        </Stack>
+        {list.length === 0 && (
+          <Box textAlign='center' px='2rem'>
+            Agrega cualquier título a tu lista de libros a leer apretando sobre
+            el título en la publicación o agregándolo abajo!
+          </Box>
+        )}
+        {list.length >= 1 && (
+          <Stack px='2rem' h='70%'>
+            <CheckboxGroup colorScheme='orange'>
+              {list &&
+                list.map((data, i) => {
+                  return (
+                    <form onSubmit={handleDelete} key={i}>
+                      <HStack>
+                        <Box>
+                          <Text display='inline'>{data.title}</Text>
+                          <Button
+                            size='sm'
+                            mx='0.5rem'
+                            bg='transparent'
+                            type='submit'
+                            _hover={{ bg: 'transparent' }}
+                            _focus={{ outline: 'none' }}
+                          >
+                            x
+                          </Button>
+                        </Box>
+                      </HStack>
+                    </form>
+                  );
+                })}
+            </CheckboxGroup>
+          </Stack>
+        )}
         <InputGroup>
           <Input
             m='0'
