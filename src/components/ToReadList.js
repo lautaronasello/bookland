@@ -1,32 +1,36 @@
 import {
   Box,
   Button,
-  Checkbox,
   CheckboxGroup,
+  Flex,
+  HStack,
   Input,
   InputGroup,
   InputRightElement,
   Stack,
+  Text,
   VStack,
 } from '@chakra-ui/react';
 import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED } from 'react-dom';
 import { db } from '..';
 
 export default function ToReadList({ actualUser }) {
   const [titleToAdd, setTitleToAdd] = useState('');
   const [list, setList] = useState([]);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
-  var handleCheck = (id) => {
-    var docStyle = document.getElementsByClassName(id);
-    var decoration = docStyle[0].style.textDecoration;
-    if (decoration === 'line-through') docStyle[0].style.textDecoration = '';
-    if (decoration === '') docStyle[0].style.textDecoration = 'line-through';
+  const dbRef = db
+    .collection(`${actualUser && actualUser.displayName}`)
+    .doc('/list')
+    .collection('/titles');
 
-    console.log(docStyle[0].style);
-  };
+  useEffect(() => {
+    if (titleToAdd.length !== 0) {
+      setIsButtonDisabled(false);
+    } else setIsButtonDisabled(true);
+  }, [titleToAdd]);
 
   var handleChange = (e) => {
     setTitleToAdd(e.target.value);
@@ -37,25 +41,19 @@ export default function ToReadList({ actualUser }) {
     db.collection(`${actualUser.displayName}`)
       .doc('list')
       .collection('/titles')
-      .add({
+      .doc(`${titleToAdd}`)
+      .set({
         title: titleToAdd,
-        textDecoration: '',
       })
       .then(() => {
         setTitleToAdd('');
       });
   };
 
-  const dbRef = db
-    .collection(`${actualUser && actualUser.displayName}`)
-    .doc('/list')
-    .collection('/titles');
-
   useEffect(() => {
     let mounted = true;
-
     dbRef.onSnapshot((querySnapshot) => {
-      var post = [];
+      let post = [];
       querySnapshot.forEach((doc) => {
         post.push(doc.data());
       });
@@ -63,10 +61,21 @@ export default function ToReadList({ actualUser }) {
         setList(post);
       }
     });
+
     return function cleanup() {
       mounted = false;
     };
   }, [actualUser, dbRef]);
+
+  var handleSubmit = (e) => {
+    var docDelete = e.target.children[0].children[0].children[0].innerHTML;
+    e.preventDefault();
+    db.collection(`${actualUser.displayName}`)
+      .doc('list')
+      .collection('/titles')
+      .doc(`${docDelete}`)
+      .delete();
+  };
 
   return (
     <Box bg='#dfc690' w='30%' pos='fixed' h='fit-content' maxH='80%'>
@@ -86,13 +95,23 @@ export default function ToReadList({ actualUser }) {
             {list &&
               list.map((data, i) => {
                 return (
-                  <Checkbox
-                    key={i}
-                    className={data.title}
-                    onChange={() => handleCheck(data.title)}
-                  >
-                    {data.title}
-                  </Checkbox>
+                  <form onSubmit={handleSubmit} key={i}>
+                    <HStack>
+                      <Box>
+                        <Text display='inline'>{data.title}</Text>
+                        <Button
+                          size='sm'
+                          mx='0.5rem'
+                          bg='transparent'
+                          type='submit'
+                          _hover={{ bg: 'transparent' }}
+                          _focus={{ outline: 'none' }}
+                        >
+                          x
+                        </Button>
+                      </Box>
+                    </HStack>
+                  </form>
                 );
               })}
           </CheckboxGroup>
@@ -100,7 +119,7 @@ export default function ToReadList({ actualUser }) {
         <InputGroup>
           <Input
             m='0'
-            px='2rem'
+            px='1rem'
             _focus={{ outline: 'none' }}
             bg='#fff'
             rounded='none'
@@ -109,14 +128,20 @@ export default function ToReadList({ actualUser }) {
             onChange={handleChange}
           />
           <InputRightElement w='7rem'>
-            <Button
-              rounded='none'
-              colorScheme='blue'
-              w='100%'
-              onClick={handleUpload}
-            >
-              Agregar
-            </Button>
+            {isButtonDisabled ? (
+              <Button disabled rounded='none' colorScheme='blue' w='100%'>
+                Agregar
+              </Button>
+            ) : (
+              <Button
+                rounded='none'
+                colorScheme='blue'
+                w='100%'
+                onClick={handleUpload}
+              >
+                Agregar
+              </Button>
+            )}
           </InputRightElement>
         </InputGroup>
       </VStack>

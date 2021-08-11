@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { db } from '..';
 import HomeCard from '../components/HomeCard';
 
-export default function HomeCardStack() {
+export default function HomeCardStack({ actualUser }) {
   const [card, setCard] = useState([]);
   const dbRef = db.collection('/database').doc('/allPost').collection('/docs');
 
@@ -41,6 +41,7 @@ export default function HomeCardStack() {
               qualy={data.qualy}
               image={data.image}
               description={data.description}
+              actualUser={actualUser}
             />
           );
         })}
