@@ -39,7 +39,7 @@ export default function Navbar() {
       >
         <Link to='/home'>
           <Heading color='#dfc690' fontSize={['1.5rem', '2.3rem']}>
-            Bookagram
+            Bookgrand
           </Heading>
         </Link>
         {width >= 1000 && (

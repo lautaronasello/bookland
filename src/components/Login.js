@@ -19,13 +19,13 @@ export default function Login() {
   };
   return (
     <Box
-      h='20rem'
-      w='23rem'
+      h={['20rem', 'fit-content', '20rem']}
+      w={['80%', '80%', '23rem']}
       rounded='none'
       justify='center'
       align='center'
       boxShadow='lg'
-      px='2rem'
+      px={['2rem', '1rem', '2rem']}
       border='1px'
       borderColor='#dbdbdb'
       mx='auto'
